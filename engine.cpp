@@ -16,6 +16,9 @@
 
 #define SCREEN_WIDTH 500
 #define SCREEN_HEIGHT 500
+#define SCREEN_FPS 60
+#define SCREEN_TICKS_PER_FRAME 1000 / SCREEN_FPS
+
 
 #define GRID_ON 1
 #define GRID_SIZE 50
@@ -40,6 +43,7 @@ int main(int argc, char* args[]) {
 
 	SDL_Color timerColor = {255, 255, 255, 255};
 	Timer fpsTimer;
+	Timer capTimer;
 	std::stringstream timerText;
 	int countedFrames = 0;
   fpsTimer.start();
@@ -47,6 +51,7 @@ int main(int argc, char* args[]) {
 	SDL_Event event;
   bool quit = false;
 	while(!quit) {
+		capTimer.start();
 		while(SDL_PollEvent(&event) != 0) {
 			if(event.type == SDL_QUIT) {
 				quit = true;
@@ -59,7 +64,7 @@ int main(int argc, char* args[]) {
     	avgFPS = 0;
     }
     timerText.str("");
-    timerText << "Average Frames Per Second " << avgFPS;
+    timerText << "FPS: " << avgFPS;
 	  SDL_Surface* fpsSurf = TTF_RenderText_Solid(font, timerText.str().c_str(), timerColor);
 	  SDL_Texture* fpsTexture = SDL_CreateTextureFromSurface(renderer, fpsSurf);
 	  SDL_Rect textRect;
@@ -72,6 +77,14 @@ int main(int argc, char* args[]) {
 	  SDL_DestroyTexture(fpsTexture);
     SDL_RenderPresent(renderer);
 		countedFrames++;
+
+		//If frame finished early
+    int frameTicks = capTimer.getTicks();
+    if(frameTicks < SCREEN_TICKS_PER_FRAME)
+    {
+        //Wait remaining time
+        SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
+    }
 	}
 	close();
 	return 0;
@@ -134,9 +147,10 @@ void close() {
 void loadGameObjects(){
 
 	GameManager::addObj(new GameObject({new Transform(), new Renderer("space.jpeg", SCREEN_WIDTH, SCREEN_HEIGHT)}));
-	GameManager::addObj(new GameObject({new Transform(), new Renderer("rat.png", 50, 200)}));
-	GameManager::addObj(new GameObject({new Transform(), new Renderer("mouse.png", 100, 100), new RigidBody(0.1, 0.1, 0.001, 0, 1)}));
-	GameManager::addObj(new GameObject({new Transform(200, 200), new Renderer("bunny.png", 100, 100), new RigidBody(-0.5, 0.1, 0.001, 0, 1)}));
+	//GameManager::addObj(new GameObject({new Transform(), new Renderer("rat.png", 50, 200)}));
+	//GameManager::addObj(new GameObject({new Transform(), new Renderer("mouse.png", 100, 100), new RigidBody(0.1, 0.1, 0.001, 0, 1)}));
+	//GameManager::addObj(new GameObject({new Transform(200, 200), new Renderer("bunny.png", 100, 100), new RigidBody(-0.5, 0.1, 0.001, 0, 1)}));
+	GameManager::addObj(new GameObject({new Transform(), new Renderer("mouse.png", 100, 100), new RigidBody(0, 0, 0, 10, 1, 0)}));
 
 
 

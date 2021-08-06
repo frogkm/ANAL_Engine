@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = engine.cpp gameobject.cpp component.cpp gamemanager.cpp timer.cpp displaymanager.cpp
+OBJS = engine.cpp gameobject.cpp component.cpp gamemanager.cpp timer.cpp displaymanager.cpp Physics/vector2.cpp Physics/particle.cpp Physics/force.cpp
 
 #CC specifies which compiler we're using
 CC = g++

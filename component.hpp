@@ -37,15 +37,18 @@ private:
 class RigidBody : public Component {
 public:
   RigidBody();
-  RigidBody(double dx, double dy, double ddx, double ddy, double mass);
+  RigidBody(double dx, double dy, double ddx, double ddy, double mass, double angle);
   void update();
   void start();
+  void addImpulse(double fx, double fy);
 private:
   double dx;
   double dy;
   double ddx;
   double ddy;
   double mass;
+  double angle;
+  double dAngle;
   Transform* transform;
 };
 
@@ -60,11 +63,10 @@ private:
   Transform* transform;
 };
 
-
 class Renderer : public Component {
 public:
   //Renderer();
-  Renderer(std::string imgPath, double renderW, double renderH); //Works with pngs and possibly more!
+  Renderer(std::string imgPath, double renderW, double renderH); //Works with pngs, jpegs, and possibly more!
   void update();
   void start();
   ~Renderer();
@@ -75,4 +77,6 @@ private:
   double renderW;
   double renderH;
 };
+
+
 #endif

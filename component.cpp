@@ -57,20 +57,26 @@ RigidBody::RigidBody() {
   mass = 1;
 }
 
-RigidBody::RigidBody(double dx, double dy, double ddx, double ddy, double mass) {
+RigidBody::RigidBody(double dx, double dy, double ddx, double ddy, double mass, double angle) {
   tag = "RigidBody";
   this->dx = dx;
   this->dy = dy;
   this->ddx = ddx;
   this->ddy = ddy;
   this->mass = mass;
+  this->angle = angle;
 }
 
 void RigidBody::update() {
-  dx += ddx;
-  dy += ddy;
+  dx += ddx; // add the constant forces
+  dy += ddy; // add the sonstant forces -- only for things that never change like gravity or some sort of magnet
   transform->move(dx, dy);
 
+}
+
+void RigidBody::addImpulse(double fx, double fy) {
+  dx += fx / mass; //Impulse creates a force that lasts one frame -- so we just add the acceleration straight to the velocities
+  dy += fy / mass;
 }
 
 void RigidBody::start() {
