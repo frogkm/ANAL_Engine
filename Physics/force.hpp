@@ -6,7 +6,7 @@
 class Particle;
 
 
-class ParticleForceGenerator {
+class ParticleForceGenerator {  //Very important!  Every force extends this class.
   public:
     virtual void updateForce(Particle *particle, double duration) = 0;
 
@@ -45,5 +45,18 @@ class DragGenerator : public ParticleForceGenerator{
     double k1; //drag coefficents
     double k2;
 };
+
+class SpringGenerator : public ParticleForceGenerator{
+  public:
+    SpringGenerator(Particle* other, double springConstant, double restLength);
+    SpringGenerator(Vector2* anchor, double springConstant, double restLength);
+    void updateForce(Particle *particle, double duration);
+  private:
+    Vector2* anchor;
+    double springConstant;
+    double restLength;
+};
+
+//TODO add a bouyancy force generator and bungee generator
 
 #endif

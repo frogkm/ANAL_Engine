@@ -1,6 +1,7 @@
 #include "force.hpp"
 #include "particle.hpp"
 #include <iterator>
+#include <cmath>
 
 void ParticleForceRegistry::add(Particle* particle, ParticleForceGenerator* forceGenerator) {
   ParticleForceRegistration temp;
@@ -44,8 +45,31 @@ DragGenerator::DragGenerator(double k1, double k2) {
 void DragGenerator::updateForce(Particle *particle, double duration) {
   Vector2 force = particle->getVelocity();
   double dragCoeff = force.length();
-  dragCoeff = k1 * dragCoeff + k2 * dragCoeff * dragCoeff;
-  force.normalize();
-  force *= -dragCoeff;
+  dragCoeff = k1 * dragCoeff + k2 * dragCoeff * dragCoeff;  //Simplified drag equation
+  force.normalize();  //Get direction of current movement
+  force *= -dragCoeff;  //Apply drag opposite direction to current (to slow us down)
   particle->addForce(force);
+}
+
+SpringGenerator::SpringGenerator(Particle* other, double springConstant, double restLength) {
+  anchor = other->getPositionAddress(); //Grabs a pointer to the particle's position so it can keep up with updates
+  this->springConstant = springConstant;
+  this->restLength = restLength;
+}
+
+SpringGenerator::SpringGenerator(Vector2* anchor, double springConstant, double restLength) {
+  this->anchor = anchor;
+  this->springConstant = springConstant;
+  this->restLength = restLength;
+}
+void SpringGenerator::updateForce(Particle *particle, double duration) {  //This will only apply spring force to one object.  For both to work you must create 2 seperate generators.
+  Vector2 force = particle->getPosition();
+  force -= (*anchor);
+  double mag = force.length();
+  mag = abs(mag - restLength);
+  mag *= springConstant;
+  force.normalize();
+  force *= -mag;
+  particle->addForce(force);
+
 }

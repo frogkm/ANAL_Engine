@@ -63,6 +63,11 @@ void Vector2::operator+=(const Vector2 other){
   y += other.getY();
 }
 
+void Vector2::operator-=(const Vector2 other) {
+  x -= other.getX();
+  y -= other.getY();
+}
+
 Vector2 Vector2::operator/(const double other){
   Vector2 temp;
   temp.set(x / other, y / other);

@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <SDL2/SDL_image.h>
+#include "Physics/particle.hpp"
 
 class GameObject;
 
@@ -50,6 +51,18 @@ private:
   double angle;
   double dAngle;
   Transform* transform;
+};
+
+class Point : public Component {
+public:
+  Point();
+  Point(double dx, double dy, double ddx, double ddy, double mass);
+  void update();
+  void start();
+  Particle* getParticleAddress();
+private:
+  Transform* transform;
+  Particle particle;
 };
 
 class BoxCollider : public Component {

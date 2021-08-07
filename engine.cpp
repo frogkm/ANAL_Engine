@@ -13,6 +13,8 @@
 #include "gamemanager.hpp"
 #include "displaymanager.hpp"
 #include "timer.hpp"
+#include "globals.hpp"
+#include "Physics/force.hpp"
 
 #define SCREEN_WIDTH 500
 #define SCREEN_HEIGHT 500
@@ -31,9 +33,11 @@ void loadGameObjects();
 void start();
 void drawGrid();
 
+int lastFrameTime = 30;  //default rand num
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 TTF_Font* font = NULL;
+ParticleForceRegistry registry;
 
 int main(int argc, char* args[]) {
 	init();
@@ -85,6 +89,7 @@ int main(int argc, char* args[]) {
         //Wait remaining time
         SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
     }
+		lastFrameTime = (int)capTimer.getTicks();
 	}
 	close();
 	return 0;
@@ -92,6 +97,7 @@ int main(int argc, char* args[]) {
 
 //Main update function
 void update() {
+	registry.updateForces(lastFrameTime / 1000.f);
 	GameManager::update();
   if (GRID_ON) {
   	drawGrid();
@@ -129,6 +135,7 @@ void init() {
   window = SDL_CreateWindow("Game Engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED || SDL_RENDERER_PRESENTVSYNC);
 	DisplayManager::setRenderer(renderer);
+
 }
 void close() {
 	for (GameObject* obj : GameManager::getObjs()) {
@@ -150,7 +157,15 @@ void loadGameObjects(){
 	//GameManager::addObj(new GameObject({new Transform(), new Renderer("rat.png", 50, 200)}));
 	//GameManager::addObj(new GameObject({new Transform(), new Renderer("mouse.png", 100, 100), new RigidBody(0.1, 0.1, 0.001, 0, 1)}));
 	//GameManager::addObj(new GameObject({new Transform(200, 200), new Renderer("bunny.png", 100, 100), new RigidBody(-0.5, 0.1, 0.001, 0, 1)}));
-	GameManager::addObj(new GameObject({new Transform(), new Renderer("mouse.png", 100, 100), new RigidBody(0, 0, 0, 10, 1, 0)}));
+	//GameManager::addObj(new GameObject({new Transform(), new Renderer("mouse.png", 100, 100), new RigidBody(0, 0, 0, 10, 1, 0)}));
+	Point* point = new Point(0, 0, 0, 0, 1);
+	Vector2 gravity(0, 100);
+	Vector2* anchorPt = new Vector2(200, 100);
+	ParticleForceGenerator* gravGen = new ConstantForceGenerator(gravity);
+	ParticleForceGenerator* springGen = new SpringGenerator(anchorPt, 2, 100);
+	registry.add(point->getParticleAddress(), gravGen);
+	registry.add(point->getParticleAddress(), springGen);
+	GameManager::addObj(new GameObject({new Transform(200, 200), new Renderer("mouse.png", 50, 50), point}));
 
 
 

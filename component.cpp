@@ -4,6 +4,9 @@
 #include "gameobject.hpp"
 //#include <SDL2/SDL_image.h>
 #include "displaymanager.hpp"
+#include "Physics/vector2.hpp"
+#include "Physics/particle.hpp"
+#include "globals.hpp"
 
 
 Component* Component::getComponent(std::string tag) {
@@ -81,6 +84,30 @@ void RigidBody::addImpulse(double fx, double fy) {
 
 void RigidBody::start() {
   transform = (Transform*)getComponent("Transform");
+}
+
+
+Point::Point() {
+  tag = "Point";
+  particle.setMass(1); //Can't leave mass at 0 by default...
+}
+Point::Point(double dx, double dy, double ddx, double ddy, double mass) {
+  tag = "Point";
+  particle.setVelocity(Vector2(dx, dy));
+  particle.setAcceleration(Vector2(ddx, ddy));
+  particle.setMass(mass);
+}
+void Point::update() {
+  transform->set(particle.getPosition().getX(), particle.getPosition().getY());
+  particle.integrate(lastFrameTime / 1000.f);  //integrate using previous frame as an estimate
+}
+void Point::start() {
+  transform = (Transform*)getComponent("Transform");
+  particle.setPosition(Vector2(transform->getX(), transform->getY()));
+}
+
+Particle* Point::getParticleAddress() {
+  return &particle;
 }
 
 

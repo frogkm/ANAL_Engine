@@ -52,6 +52,9 @@ void Particle::addForce(const Vector2& force) {
 Vector2 Particle::getPosition() {
   return position;
 }
+Vector2* Particle::getPositionAddress() {
+  return &position;
+}
 Vector2 Particle::getVelocity() {
   return velocity;
 }

@@ -15,6 +15,7 @@ class Vector2 {
     Vector2 operator+(const Vector2 other);
     void operator+=(const Vector2 other);
     Vector2 operator-(const Vector2 other);
+    void operator-=(const Vector2 other);
     Vector2 operator*(const double other);
     Vector2 operator/(const double other);
     void operator*=(const double other);

@@ -21,6 +21,7 @@ class Particle {
 
     void clearAccumulator();
     void addForce(const Vector2& force);
+    Vector2* getPositionAddress();
 
   protected:
     Vector2 position;
