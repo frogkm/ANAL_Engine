@@ -1,5 +1,5 @@
 #include <SDL2/SDL.h>
-#include "timer.hpp"
+#include "../include/timer.hpp"
 
 Timer::Timer() {
     startTime = 0;

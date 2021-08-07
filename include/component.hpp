@@ -1,10 +1,9 @@
-
 #ifndef COMPONENT_HPP
 #define COMPONENT_HPP
 #include <vector>
 #include <string>
 #include <SDL2/SDL_image.h>
-#include "Physics/particle.hpp"
+#include "particle.hpp"
 
 class GameObject;
 

@@ -1,12 +1,12 @@
 #include <string>
 #include <iostream>
-#include "component.hpp"
-#include "gameobject.hpp"
+#include "../include/component.hpp"
+#include "../include/gameobject.hpp"
 //#include <SDL2/SDL_image.h>
-#include "displaymanager.hpp"
-#include "Physics/vector2.hpp"
-#include "Physics/particle.hpp"
-#include "globals.hpp"
+#include "../include/displaymanager.hpp"
+#include "../include/vector2.hpp"
+#include "../include/particle.hpp"
+#include "../include/globals.hpp"
 
 
 Component* Component::getComponent(std::string tag) {

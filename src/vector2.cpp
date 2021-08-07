@@ -1,5 +1,5 @@
-#include "vector2.hpp"
 #include <cmath>
+#include "../include/vector2.hpp"
 
 Vector2::Vector2(){
   this->set(0, 0);  //Default constructor

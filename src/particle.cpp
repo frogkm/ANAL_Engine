@@ -1,4 +1,4 @@
-#include "particle.hpp"
+#include "../include/particle.hpp"
 #include <cmath>
 
 void Particle::integrate(double duration) {

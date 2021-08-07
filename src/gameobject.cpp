@@ -1,6 +1,6 @@
 #include <string>
 #include <iostream>
-#include "gameobject.hpp"
+#include "../include/gameobject.hpp"
 
 GameObject::GameObject() {
   //std::vector<Component> components;

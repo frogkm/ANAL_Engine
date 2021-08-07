@@ -1,4 +1,4 @@
-#include "displaymanager.hpp"
+#include "../include/displaymanager.hpp"
 
 
 const SDL_Color DisplayManager::RED = {255, 0, 0};

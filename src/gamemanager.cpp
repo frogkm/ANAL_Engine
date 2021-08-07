@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
-#include "gamemanager.hpp"
-#include "gameobject.hpp"
+#include "../include/gamemanager.hpp"
+#include "../include/gameobject.hpp"
 
 std::vector<GameObject*> GameManager::gameObjects;
 std::unordered_map<std::string, std::vector<Component*>> GameManager::componentGroups;

@@ -1,5 +1,5 @@
-#include "force.hpp"
-#include "particle.hpp"
+#include "../include/force.hpp"
+#include "../include/particle.hpp"
 #include <iterator>
 #include <cmath>
 
