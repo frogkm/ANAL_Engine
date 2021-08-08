@@ -39,7 +39,7 @@ SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 TTF_Font* font = NULL;
 ParticleForceRegistry registry;
-
+// testing
 int main(int argc, char* args[]) {
 	init();
 	loadMedia();
