@@ -163,13 +163,16 @@ void loadGameObjects(){
 	//GameManager::addObj(new GameObject({new Transform(200, 200), new Renderer("bunny.png", 100, 100), new RigidBody(-0.5, 0.1, 0.001, 0, 1)}));
 	//GameManager::addObj(new GameObject({new Transform(), new Renderer("mouse.png", 100, 100), new RigidBody(0, 0, 0, 10, 1, 0)}));
 	Point* point = new Point(0, 0, 0, 0, 1);
-	Vector2 gravity(0, 100);
-	Vector2* anchorPt = new Vector2(200, 100);
-	ParticleForceGenerator* gravGen = new ConstantForceGenerator(gravity);
-	ParticleForceGenerator* springGen = new SpringGenerator(anchorPt, 2, 100);
-	registry.add(point->getParticleAddress(), gravGen);
+	//Vector2 gravity(0, 100);
+	Vector2* anchorPt = new Vector2(250, 0);
+	//ParticleForceGenerator* gravGen = new ConstantForceGenerator(gravity);
+	ParticleForceGenerator* springGen = new SpringGenerator(anchorPt, 5, 100);
+	//registry.add(point->getParticleAddress(), gravGen);
 	registry.add(point->getParticleAddress(), springGen);
-	GameManager::addObj(new GameObject({new Transform(200, 200), new Renderer("resources/mouse.png", 50, 50), point}));
+	//anchorPt = new Vector2(400, 200);
+	//springGen = new SpringGenerator(anchorPt, 2, 100);
+	//registry.add(point->getParticleAddress(), springGen);
+	GameManager::addObj(new GameObject({new Transform(250, 90), new Renderer("resources/mouse.png", 50, 50), point}));
 
 
 

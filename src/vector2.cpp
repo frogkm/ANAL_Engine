@@ -19,7 +19,7 @@ void Vector2::invert() {
   y = -y;
 }
 
-double Vector2::length() {
+double Vector2::length() {  //rename magnitude
   return sqrt(((this->x) * (this->x)) + ((this->y) * (this->y)));
 }
 
