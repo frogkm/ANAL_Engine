@@ -3,41 +3,40 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
 
-
 #include "../include/engine.hpp"
-#include "../include/gamemanager.hpp"
-#include "../include/displaymanager.hpp"
 #include "../include/gameobject.hpp"
 #include "../include/component.hpp"
-//#include "../include/physicsmanager.hpp"
-//#include "../include/timemanager.hpp"
+#include "../include/managers.hpp"
+#include "../include/gamemanager.hpp"
+#include "../include/displaymanager.hpp"
+#include "../include/timemanager.hpp"
+#include "../include/physicsmanager.hpp"
+#include "../include/vector2.hpp"
+#include "../include/particle.hpp"
+#include "../include/force.hpp"
 
-
-//Engine::physicsManager = NULL;
-//Engine::timeManager = NULL;
 
 void Engine::loadGameObjects() {
-  gameManager->addObj(new GameObject({new Transform(), new Renderer(displayManager, "resources/space.jpeg", displayManager->getsW(), displayManager->getsH())}));
-	gameManager->addObj(new GameObject({new Transform(200, 200), new Renderer(displayManager, "resources/mouse.png", 50, 50)}));
+  Managers::gameManager->addObj(new GameObject({new Transform(), new Renderer("resources/space.jpeg", Managers::displayManager->getsW(), Managers::displayManager->getsH())}));
+
+  Point* point = new Point(0, 0, 0, 0, 1);
+  ParticleForceGenerator* grav = new ConstantForceGenerator(Vector2(0, 100));
+  Managers::physicsManager->addParticle(point->getParticleAddress(), grav);
+  Vector2* anchor = new Vector2(200, 100);
+  ParticleForceGenerator* spring = new SpringGenerator(anchor, 2, 100);
+  Managers::physicsManager->addParticle(point->getParticleAddress(), spring);
+  ParticleForceGenerator* damp = new DragGenerator(0.01, 0);
+  Managers::physicsManager->addParticle(point->getParticleAddress(), damp);
+	Managers::gameManager->addObj(new GameObject({new Transform(200, 200), new Renderer("resources/mouse.png", 50, 50), point}));
 }
 
 Engine::Engine(int sW, int sH, int fpsLimit) {
   initSDL();
-  gameManager = new GameManager();
-  displayManager = new DisplayManager(sW, sH);
-  //physicsManager = new PhysicsManager();
-  //timeManager = new TimeManager();
+  Managers::setupManagers(sW, sH);
 }
 
 Engine::~Engine() {
-  delete gameManager;
-  delete displayManager;
-  //delete physicsManager;
-  //delete timeManager;
-  gameManager = NULL;
-  displayManager = NULL;
-  //physicsManager = NULL;
-  //timeManager = NULL;
+  Managers::cleanup();
 }
 
 void Engine::initSDL() {
@@ -47,7 +46,7 @@ void Engine::initSDL() {
 }
 
 void Engine::startGameObjects() {
-  gameManager->start();
+  Managers::gameManager->start();
 }
 
 void Engine::start() {
@@ -72,12 +71,11 @@ bool Engine::innerLoop(SDL_Event &event) {
     }
   }
 
-  gameManager->updateObjects();
-  displayManager->clearScreen();
-  gameManager->drawObjects();
-  displayManager->presentScreen();
-  //displayManager.drawObjects();
-
+  Managers::physicsManager->updateForces(Managers::timeManager->getLastFrameDuration());
+  Managers::gameManager->updateObjects();
+  Managers::displayManager->clearScreen();
+  Managers::gameManager->drawObjects();
+  Managers::displayManager->presentScreen();
 
 }
 
@@ -85,8 +83,10 @@ void Engine::startGameLoop() {
 	SDL_Event event;
   bool quit = false;
 	while(!quit){
+    Managers::timeManager->startTimingFrame();  //Time the entire frame
     //Code before everything
     quit = innerLoop(event);
     //Code after everything
+    Managers::timeManager->doneTimingFrame();  //Record the frame's duration
   }
 }

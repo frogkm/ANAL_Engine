@@ -80,14 +80,13 @@ private:
 class Renderer : public Component {
 public:
   //Renderer();
-  Renderer(DisplayManager* displayManager, std::string imgPath, double renderW, double renderH); //Works with pngs, jpegs, and possibly more!
+  Renderer(std::string imgPath, double renderW, double renderH); //Works with pngs, jpegs, and possibly more!
   void update();
   void start();
   void draw();
   ~Renderer();
 private:
   Transform* transform;
-  DisplayManager* displayManager;
   SDL_Texture* currentTexture;
   double renderW;
   double renderH;

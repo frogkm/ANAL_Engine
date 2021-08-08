@@ -81,6 +81,9 @@ void Vector2::clear() {
 
 void Vector2::normalize() {
   double mag = length();
+  if (mag <= 0) {
+    return;
+  }
   x /= mag;
   y /= mag;
 }

@@ -8,7 +8,8 @@
 #include "../include/displaymanager.hpp"
 #include "../include/vector2.hpp"
 #include "../include/particle.hpp"
-#include "../include/globals.hpp"
+#include "../include/managers.hpp"
+#include "../include/timemanager.hpp"
 
 
 Component* Component::getComponent(std::string tag) {
@@ -102,10 +103,10 @@ Point::Point(double dx, double dy, double ddx, double ddy, double mass) {
   particle.setMass(mass);
 }
 void Point::update() {
-  /*
+
   transform->set(particle.getPosition().getX(), particle.getPosition().getY());
-  particle.integrate(lastFrameTime / 1000.f);  //integrate using previous frame as an estimate
-  */
+  particle.integrate(Managers::timeManager->getLastFrameDuration() / 1000.f);  //integrate using previous frame as an estimate
+
 }
 void Point::start() {
   transform = (Transform*)getComponent("Transform");
@@ -136,11 +137,10 @@ void BoxCollider::start() {
 //  tag = "Renderer";
 //}
 
-Renderer::Renderer(DisplayManager* displayManager, std::string imgPath, double renderW, double renderH) {
+Renderer::Renderer(std::string imgPath, double renderW, double renderH) {
   tag = "Renderer";
-  this->displayManager = displayManager;
   //std::cout << (displayManager == NULL)  << std::endl;
-  currentTexture = displayManager->makeTexture(imgPath);
+  currentTexture = Managers::displayManager->makeTexture(imgPath);
   //std::cout << currentTexture  << std::endl;
   this->renderW = renderW;
   this->renderH = renderH;
@@ -168,7 +168,7 @@ void Renderer::draw() {
   dest.h = renderH;
   //std::cout << (currentTexture == NULL) << std::endl;
   //std::cout << (displayManager->getRenderer() == NULL) << std::endl;
-  SDL_RenderCopy(displayManager->getRenderer(), currentTexture, NULL, &dest);
+  SDL_RenderCopy(Managers::displayManager->getRenderer(), currentTexture, NULL, &dest);
 }
 
 

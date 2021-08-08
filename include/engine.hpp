@@ -17,10 +17,5 @@ public:
   void startGameObjects();
   void startGameLoop();  //Main game loop
   bool innerLoop(SDL_Event &event);  //This method called every frame
-private:
-  GameManager* gameManager;        //GameObject handling
-  DisplayManager* displayManager;  //Rendering functions
-  //PhysicsManager* physicsManager;  //Physics system
-  //TimeManager* timeManager;       //Keep time
 };
 #endif
