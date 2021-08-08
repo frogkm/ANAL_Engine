@@ -6,10 +6,12 @@
 #include "particle.hpp"
 
 class GameObject;
+class DisplayManager;
 
 class Component {
 public:
   virtual void update() = 0;  //Update called every game update
+  virtual void draw();  //Draw called every game update
   virtual void start() = 0;   //Start called once at beginning of program.  Use to set pointers to other components.
   Component* getComponent(std::string tag);
   void setGameObject(GameObject* gameObject);
@@ -78,13 +80,14 @@ private:
 class Renderer : public Component {
 public:
   //Renderer();
-  Renderer(std::string imgPath, double renderW, double renderH); //Works with pngs, jpegs, and possibly more!
+  Renderer(DisplayManager* displayManager, std::string imgPath, double renderW, double renderH); //Works with pngs, jpegs, and possibly more!
   void update();
   void start();
+  void draw();
   ~Renderer();
 private:
   Transform* transform;
-  SDL_Renderer* renderer;
+  DisplayManager* displayManager;
   SDL_Texture* currentTexture;
   double renderW;
   double renderH;

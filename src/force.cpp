@@ -66,12 +66,10 @@ void SpringGenerator::updateForce(Particle *particle, double duration) {  //This
   Vector2 force = particle->getPosition();
   force -= (*anchor);
   double mag = force.length();
-  //mag = abs(mag - restLength);
   mag = mag - restLength;
   mag *= springConstant;
   force.normalize();
   force *= -mag;
-  //force *= -mag;
   particle->addForce(force);
 
 }

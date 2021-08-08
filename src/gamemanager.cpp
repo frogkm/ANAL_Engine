@@ -3,13 +3,19 @@
 #include "../include/gamemanager.hpp"
 #include "../include/gameobject.hpp"
 
-std::vector<GameObject*> GameManager::gameObjects;
-std::unordered_map<std::string, std::vector<Component*>> GameManager::componentGroups;
+//std::vector<GameObject*> GameManager::gameObjects;
+//std::unordered_map<std::string, std::vector<Component*>> GameManager::componentGroups;
 
 void GameManager::addObj(GameObject* obj) {
   gameObjects.push_back(obj);
   for (Component* comp : obj->getComponents()) {
     componentGroups[comp->getTag()].push_back(comp);
+  }
+}
+
+GameManager::~GameManager() {
+  for (GameObject* obj : gameObjects) {
+    delObj(obj);
   }
 }
 
@@ -50,10 +56,24 @@ std::unordered_map<std::string, std::vector<Component*>>& GameManager::getCompGr
   return componentGroups;
 }
 
-void GameManager::update() {
+void GameManager::updateObjects() {
   for (auto it = componentGroups.begin(); it != componentGroups.end(); it++) {
 		for (Component* comp : it->second) {
 			comp->update();
+		}
+	}
+}
+
+void GameManager::start() {
+  for (GameObject* obj : gameObjects) {
+    obj->start();
+  }
+}
+
+void GameManager::drawObjects() {
+  for (auto it = componentGroups.begin(); it != componentGroups.end(); it++) {
+		for (Component* comp : it->second) {
+			comp->draw();
 		}
 	}
 }

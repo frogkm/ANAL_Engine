@@ -1,5 +1,7 @@
 #include <string>
 #include <iostream>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include "../include/component.hpp"
 #include "../include/gameobject.hpp"
 //#include <SDL2/SDL_image.h>
@@ -20,6 +22,8 @@ void Component::setGameObject(GameObject* gameObject) {
 std::string Component::getTag() {
   return tag;
 }
+
+void Component::draw() {}
 
 void Transform::update() {}
 
@@ -98,8 +102,10 @@ Point::Point(double dx, double dy, double ddx, double ddy, double mass) {
   particle.setMass(mass);
 }
 void Point::update() {
+  /*
   transform->set(particle.getPosition().getX(), particle.getPosition().getY());
   particle.integrate(lastFrameTime / 1000.f);  //integrate using previous frame as an estimate
+  */
 }
 void Point::start() {
   transform = (Transform*)getComponent("Transform");
@@ -130,9 +136,12 @@ void BoxCollider::start() {
 //  tag = "Renderer";
 //}
 
-Renderer::Renderer(std::string imgPath, double renderW, double renderH) {
+Renderer::Renderer(DisplayManager* displayManager, std::string imgPath, double renderW, double renderH) {
   tag = "Renderer";
-  currentTexture = DisplayManager::makeTexture(imgPath);
+  this->displayManager = displayManager;
+  //std::cout << (displayManager == NULL)  << std::endl;
+  currentTexture = displayManager->makeTexture(imgPath);
+  //std::cout << currentTexture  << std::endl;
   this->renderW = renderW;
   this->renderH = renderH;
 }
@@ -143,8 +152,29 @@ Renderer::~Renderer() {
   }
 }
 
+void Renderer::draw() {
+  //if (DisplayManager::isFirstRender()) {
+  //  DisplayManager::setFirstRender(false);
+  //  DisplayManager::clearScreen();
+  //}
+  //DisplayManager::drawRect(transform->getX(), transform->getY(), 100, 100, DisplayManager::RED);
+  //displayManager->drawTexture(transform->getX(), transform->getY(), renderW, renderH, currentTexture);
+  SDL_Rect dest;
+  dest.x = transform->getX();
+  dest.y = transform->getY();
+  //dest.x = 0;
+  //dest.y = 0;
+  dest.w = renderW;
+  dest.h = renderH;
+  //std::cout << (currentTexture == NULL) << std::endl;
+  //std::cout << (displayManager->getRenderer() == NULL) << std::endl;
+  SDL_RenderCopy(displayManager->getRenderer(), currentTexture, NULL, &dest);
+}
+
+
 void Renderer::update() {
   //Clears screen if this is the first obj to render
+  /*
   if (DisplayManager::isFirstRender()) {
     DisplayManager::setFirstRender(false);
     DisplayManager::clearScreen();
@@ -158,6 +188,7 @@ void Renderer::update() {
   dest.w = renderW;
   dest.h = renderH;
   SDL_RenderCopy(DisplayManager::getRenderer(), currentTexture, NULL, &dest);
+  */
 }
 
 void Renderer::start() {

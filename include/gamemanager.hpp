@@ -9,15 +9,18 @@ class GameObject;
 
 class GameManager {
 public:
-  static void addObj(GameObject* obj);
-  static GameObject* getObj(std::string code); // Returns ref to first gameobject with matching string
-  static std::vector<GameObject*> getObjs(std::string code); // Returns pointer to all gameobjects with matching string
-  static std::vector<GameObject*>& getObjs();
-  static std::unordered_map<std::string, std::vector<Component*>>& getCompGroups();
-  static void delObj(GameObject* obj);
-  static void update();
+  ~GameManager();
+  void addObj(GameObject* obj);
+  void drawObjects();
+  GameObject* getObj(std::string code); // Returns ref to first gameobject with matching string
+  std::vector<GameObject*> getObjs(std::string code); // Returns pointer to all gameobjects with matching string
+  std::vector<GameObject*>& getObjs();
+  std::unordered_map<std::string, std::vector<Component*>>& getCompGroups();
+  void delObj(GameObject* obj);
+  void updateObjects();
+  void start();
 private:
-  static std::vector<GameObject*> gameObjects;  //Contains every gameobject instance
-  static std::unordered_map<std::string, std::vector<Component*>> componentGroups;
+  std::vector<GameObject*> gameObjects;  //Contains every gameobject instance
+  std::unordered_map<std::string, std::vector<Component*>> componentGroups;
 };
 #endif

@@ -7,14 +7,17 @@
 
 class DisplayManager {
 public:
-  static bool isFirstRender();
-  static SDL_Renderer* getRenderer();
-  static void setRenderer(SDL_Renderer* renderer);
-  static void setFirstRender(bool firstRender);
-  static void clearScreen();
-  static void presentScreen();
-  static void drawRect(double x, double y, double w, double h, SDL_Color color);
-  static SDL_Texture* makeTexture(std::string path);
+  DisplayManager(int sW, int sH);
+  ~DisplayManager();
+  SDL_Renderer* getRenderer();
+  void setRenderer(SDL_Renderer* renderer);
+  void clearScreen();
+  void presentScreen();
+  void drawRect(double x, double y, double w, double h, SDL_Color color);
+  void drawTexture(double x, double y, double w, double h, SDL_Texture* texture);
+  SDL_Texture* makeTexture(std::string path);
+  int getsW();
+  int getsH();
 
   static const SDL_Color RED;
   static const SDL_Color BLUE;
@@ -27,8 +30,10 @@ public:
   static const SDL_Color BLACK;
   static const SDL_Color GRAY;
 private:
-  static bool firstRender;
-  static SDL_Renderer* renderer;
+  SDL_Renderer* renderer;
+  SDL_Window* window;
+  int sW;
+  int sH;
 
 };
 #endif

@@ -46,7 +46,7 @@ void Particle::clearAccumulator() {
 }
 
 void Particle::addForce(const Vector2& force) {
-  forceAccum += force;  //Rename to net force
+  forceAccum += force;
 }
 
 Vector2 Particle::getPosition() {
