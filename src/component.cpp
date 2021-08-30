@@ -30,29 +30,28 @@ void Transform::update() {}
 
 Transform::Transform() {
   tag = "Transform";
-  x = 0;
-  y = 0;
+  //position = Vector2(0, 0)
 }
 
 Transform::Transform(double x, double y) {
   tag = "Transform";
-  this->x = x;
-  this->y = y;
+  position = Vector2(x, y);
 }
 
 void Transform::set(double x, double y) {
-  this->x = x;
-  this->y = y;
+  position.set(x, y);
 }
 void Transform::move(double x_move, double y_move) {
-  x += x_move;
-  y += y_move;
+  position += Vector2(x_move, y_move);
 }
 double Transform::getX() {
-  return x;
+  return position.getX();
 }
 double Transform::getY() {
-  return y;
+  return position.getY();
+}
+Vector2& Transform::getPosition() {
+  return position;
 }
 void Transform::start() {}
 
@@ -91,7 +90,7 @@ void RigidBody::start() {
   transform = (Transform*)getComponent("Transform");
 }
 
-
+/*
 Point::Point() {
   tag = "Point";
   particle.setMass(1); //Can't leave mass at 0 by default...
@@ -116,6 +115,7 @@ void Point::start() {
 Particle* Point::getParticleAddress() {
   return &particle;
 }
+*/
 
 
 BoxCollider::BoxCollider(double w, double h) {
@@ -128,10 +128,6 @@ void BoxCollider::update() {
 void BoxCollider::start() {
   transform = (Transform*)getComponent("Transform");
 }
-
-
-
-
 
 //Renderer::Renderer() {
 //  tag = "Renderer";

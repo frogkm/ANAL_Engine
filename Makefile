@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = src/gulp.cpp src/engine.cpp src/gameobject.cpp src/component.cpp src/gamemanager.cpp src/timer.cpp src/displaymanager.cpp src/vector2.cpp src/particle.cpp src/force.cpp src/managers.cpp src/timemanager.cpp src/physicsmanager.cpp
+OBJS = src/gulp.cpp src/engine.cpp src/gameobject.cpp src/component.cpp src/gamemanager.cpp src/timer.cpp src/displaymanager.cpp src/vector2.cpp src/particle.cpp src/force.cpp src/managers.cpp src/timemanager.cpp src/physicsmanager.cpp src/rigidbody.cpp
 
 #CC specifies which compiler we're using
 CC = g++

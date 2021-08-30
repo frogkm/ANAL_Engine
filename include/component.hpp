@@ -3,10 +3,12 @@
 #include <vector>
 #include <string>
 #include <SDL2/SDL_image.h>
-#include "particle.hpp"
+#include "vector2.hpp"
+
 
 class GameObject;
 class DisplayManager;
+
 
 class Component {
 public:
@@ -29,11 +31,11 @@ public:
   void move(double x_move, double y_move);
   double getX();
   double getY();
+  Vector2& getPosition();
   void update();
   void start();
 private:
-  double x;
-  double y;
+  Vector2 position;
 };
 
 class RigidBody : public Component {
@@ -53,7 +55,7 @@ private:
   double dAngle;
   Transform* transform;
 };
-
+/*
 class Point : public Component {
 public:
   Point();
@@ -65,6 +67,7 @@ private:
   Transform* transform;
   Particle particle;
 };
+*/
 
 class BoxCollider : public Component {
 public:
