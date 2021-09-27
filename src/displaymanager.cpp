@@ -76,6 +76,16 @@ void DisplayManager::drawTexture(double x, double y, double w, double h, SDL_Tex
   dest.h = h;
   SDL_RenderCopy(renderer, texture, NULL, &dest);
 }
+/*
+void DisplayManager::drawTexture(double x, double y, double w, double h, SDL_Texture* texture, double angle) {
+  SDL_Rect dest;
+  dest.x = x;
+  dest.y = y;
+  dest.w = w;
+  dest.h = h;
+  SDL_RenderCopy(renderer, texture, NULL, &dest);
+}
+*/
 
 void DisplayManager::presentScreen() {
   SDL_RenderPresent(renderer);

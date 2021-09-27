@@ -3,10 +3,12 @@
 #include <vector>
 #include <string>
 #include <SDL2/SDL_image.h>
-#include "particle.hpp"
+#include "vector2.hpp"
+
 
 class GameObject;
 class DisplayManager;
+
 
 class Component {
 public:
@@ -29,42 +31,14 @@ public:
   void move(double x_move, double y_move);
   double getX();
   double getY();
+  Vector2& getPosition();
   void update();
   void start();
 private:
-  double x;
-  double y;
+  Vector2 position;
 };
 
-class RigidBody : public Component {
-public:
-  RigidBody();
-  RigidBody(double dx, double dy, double ddx, double ddy, double mass, double angle);
-  void update();
-  void start();
-  void addImpulse(double fx, double fy);
-private:
-  double dx;
-  double dy;
-  double ddx;
-  double ddy;
-  double mass;
-  double angle;
-  double dAngle;
-  Transform* transform;
-};
 
-class Point : public Component {
-public:
-  Point();
-  Point(double dx, double dy, double ddx, double ddy, double mass);
-  void update();
-  void start();
-  Particle* getParticleAddress();
-private:
-  Transform* transform;
-  Particle particle;
-};
 
 class BoxCollider : public Component {
 public:
@@ -75,21 +49,6 @@ private:
   double w;
   double h;
   Transform* transform;
-};
-
-class Renderer : public Component {
-public:
-  //Renderer();
-  Renderer(std::string imgPath, double renderW, double renderH); //Works with pngs, jpegs, and possibly more!
-  void update();
-  void start();
-  void draw();
-  ~Renderer();
-private:
-  Transform* transform;
-  SDL_Texture* currentTexture;
-  double renderW;
-  double renderH;
 };
 
 

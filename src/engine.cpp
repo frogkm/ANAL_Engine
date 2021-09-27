@@ -6,6 +6,7 @@
 #include "../include/engine.hpp"
 #include "../include/gameobject.hpp"
 #include "../include/component.hpp"
+#include "../include/renderer.hpp"
 #include "../include/managers.hpp"
 #include "../include/gamemanager.hpp"
 #include "../include/displaymanager.hpp"
@@ -17,17 +18,19 @@
 
 
 void Engine::loadGameObjects() {
-  Managers::gameManager->addObj(new GameObject({new Transform(), new Renderer("resources/space.jpeg", Managers::displayManager->getsW(), Managers::displayManager->getsH())}));
-
-  Point* point = new Point(0, 0, 0, 0, 1);
-  ParticleForceGenerator* grav = new ConstantForceGenerator(Vector2(0, 100));
-  Managers::physicsManager->addParticle(point->getParticleAddress(), grav);
+  Particle* particle = new Particle();
   Vector2* anchor = new Vector2(200, 100);
+
+  ParticleForceGenerator* grav = new ConstantForceGenerator(Vector2(0, 100));
   ParticleForceGenerator* spring = new SpringGenerator(anchor, 2, 100);
-  Managers::physicsManager->addParticle(point->getParticleAddress(), spring);
   ParticleForceGenerator* damp = new DragGenerator(0.01, 0);
-  Managers::physicsManager->addParticle(point->getParticleAddress(), damp);
-	Managers::gameManager->addObj(new GameObject({new Transform(200, 200), new Renderer("resources/mouse.png", 50, 50), point}));
+
+  Managers::physicsManager->addParticle(particle, grav); //Apply gravity to particle component
+  Managers::physicsManager->addParticle(particle, spring); //Apply spring to particle from the anchor
+  Managers::physicsManager->addParticle(particle, damp); //Apply damping to particle
+
+  Managers::gameManager->addObj(new GameObject({new Transform(), new Renderer("resources/space.jpeg", Managers::displayManager->getsW(), Managers::displayManager->getsH())})); //Add a static background
+	Managers::gameManager->addObj(new GameObject({new Transform(200, 200), new Renderer("resources/mouse.png", 50, 50), particle}));  //Add basic components and particle to object, and add object to the scene
 }
 
 Engine::Engine(int sW, int sH, int fpsLimit) {
@@ -56,9 +59,6 @@ void Engine::start() {
 }
 
 void Engine::stop() {
-  //for (GameObject* obj : GameManager::getObjs()) {
-  //  delete obj;
-  //}
   IMG_Quit();
   SDL_Quit();
   TTF_Quit();
