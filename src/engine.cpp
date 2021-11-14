@@ -15,11 +15,15 @@
 #include "../include/vector2.hpp"
 #include "../include/particle.hpp"
 #include "../include/force.hpp"
+#include "../include/rigidbody.hpp"
 
 
 void Engine::loadGameObjects() {
   Particle* particle = new Particle();
   Vector2* anchor = new Vector2(200, 100);
+  RigidBody* rigidBody = new RigidBody();
+  rigidBody->setAngularVelocity(1);
+  rigidBody->setOrientation(1);
 
   ParticleForceGenerator* grav = new ConstantForceGenerator(Vector2(0, 100));
   ParticleForceGenerator* spring = new SpringGenerator(anchor, 2, 100);
@@ -31,6 +35,8 @@ void Engine::loadGameObjects() {
 
   Managers::gameManager->addObj(new GameObject({new Transform(), new Renderer("resources/space.jpeg", Managers::displayManager->getsW(), Managers::displayManager->getsH())})); //Add a static background
 	Managers::gameManager->addObj(new GameObject({new Transform(200, 200), new Renderer("resources/mouse.png", 50, 50), particle}));  //Add basic components and particle to object, and add object to the scene
+
+  Managers::gameManager->addObj(new GameObject({new Transform(300, 300), new SpriteRenderer("resources/mouse.png", 50, 50), rigidBody}));  //Add basic components and particle to object, and add object to the scene
 }
 
 Engine::Engine(int sW, int sH, int fpsLimit) {

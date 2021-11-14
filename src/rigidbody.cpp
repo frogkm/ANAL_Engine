@@ -10,11 +10,8 @@ void RigidBody::integrate(double duration) {
     return;
   }
   position.addScaledVector(velocity, duration);
-  orientation += angularVelocity * duration;
+  setOrientation(orientation + angularVelocity * duration);
 
-  while (orientation >= RigidBody::maxRotation) {
-    orientation -= RigidBody::maxRotation;
-  }
 
   Vector2 resultingAcc = acceleration;
   resultingAcc.addScaledVector(forceAccum, inverseMass);
@@ -51,6 +48,17 @@ void RigidBody::setMass(double mass) {
 }
 void RigidBody::setInverseMass(double invMass) {
   inverseMass = invMass;
+}
+
+void RigidBody::setOrientation(double orientation) {
+  while (orientation >= RigidBody::maxRotation) {
+    orientation -= RigidBody::maxRotation;
+  }
+  this->orientation = orientation;
+}
+
+void RigidBody::setAngularVelocity(double angularVelocity) {
+  this->angularVelocity = angularVelocity;
 }
 
 

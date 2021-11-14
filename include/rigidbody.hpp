@@ -31,6 +31,8 @@ public:
   void setAcceleration(Vector2 acc);
   void setMass(double mass);
   void setInverseMass(double invMass);
+  void setOrientation(double orientation);
+  void setAngularVelocity(double angularVelocity);
 
   Vector2 getPosition();
   Vector2 getVelocity();
